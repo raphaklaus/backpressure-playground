@@ -1,0 +1,10 @@
+{application,backpressureplayground,
+             [{applications,[kernel,stdlib,elixir,logger,gen_stage]},
+              {description,"backpressureplayground"},
+              {modules,['Elixir.Backpressureplayground',
+                        'Elixir.Backpressureplayground.Application',
+                        'Elixir.Backpressureplayground.Consumer',
+                        'Elixir.Backpressureplayground.Producer']},
+              {registered,[]},
+              {vsn,"0.1.0"},
+              {mod,{'Elixir.Backpressureplayground.Application',[]}}]}.
