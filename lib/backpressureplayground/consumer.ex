@@ -34,39 +34,36 @@ defmodule Backpressureplayground.Consumer do
     {:noreply, [], ask_and_schedule(producers, from)}
   end
 
-  defp ask_and_schedule(producers, from) do
-    case producers do
-      %{^from => {pending, interval}} ->
-        # IO.inspect "pending"
-        # IO.inspect pending
-        # Ask for any pending events
-        GenStage.ask(from, pending)
-        # And let's check again after interval
-        Process.send_after(self(), {:ask, from}, interval)
-        # Finally, reset pending events to 0
-        Map.put(producers, from, {0, interval})
-      %{} ->
-        producers
-    end
+  defp ask_and_schedule(_producers, from) do
+    GenStage.ask(from, 5)
+    Process.send_after(self(), {:ask, from}, 2000)
+    # case producers do
+    #   %{^from => {pending, interval}} ->
+    #     # IO.inspect "pending"
+    #     # IO.inspect pending
+    #     # Ask for any pending events
+    #     GenStage.ask(from, pending)
+    #     # And let's check again after interval
+    #     Process.send_after(self(), {:ask, from}, interval)
+    #     # Finally, reset pending events to 0
+    #     Map.put(producers, from, {0, interval})
+    #   %{} ->
+    #     producers
+    # end
   end
 
   @spec handle_events(any, any, any) :: {:noreply, [], any}
-  def handle_events(events, _from, producers) do
+  def handle_events(events, _from, _producers) do
     # Bump the amount of pending events for the given producer
-    IO.inspect "handle_events"
-    IO.inspect events
-
-    #producers = Map.update!(producers, from, fn {pending, interval} ->
-      # IO.inspect "events-loop"
-      # IO.inspect events
-      #{pending + length(events), interval}
-    #end)
+    # producers = Map.update!(producers, from, fn {pending, interval} ->
+    #   {pending + length(events), interval}
+    # end)
 
     # Consume the events by printing them.
-    # IO.inspect(events)
-    # IO.inspect producers
+    IO.inspect "consumer"
+    IO.inspect(events, charlists: :as_lists)
 
     # A producer_consumer would return the processed events here.
-    {:noreply, [], producers}
+    {:noreply, [], events}
   end
 end
