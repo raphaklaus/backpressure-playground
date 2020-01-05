@@ -60,7 +60,7 @@ defmodule Backpressureplayground.Consumer do
     # end)
 
     # Consume the events by printing them.
-    IO.inspect "consumer"
+    IO.inspect "sending messages:"
     IO.inspect(events, charlists: :as_lists)
 
     # A producer_consumer would return the processed events here.

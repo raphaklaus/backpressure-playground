@@ -14,14 +14,14 @@ defmodule Backpressureplayground.Producer do
 
   def add(:end), do: GenServer.cast(__MODULE__, {:add, 888..950 |> Enum.to_list()})
 
-  def handle_cast({:add, events}, _state) do
+  def handle_cast({:add, events}, state) do
     # IO.inspect "add"
     # IO.inspect events
     # {:noreply, events, state} -> Add events directly to consumer
     # {:noreply, events, events} -> Add events to state, to later be demanded by consumer
     IO.inspect "adding this:"
     IO.inspect events
-    {:noreply, [], events}
+    {:noreply, [], state ++ events}
   end
 
   def handle_demand(demand, state) do
